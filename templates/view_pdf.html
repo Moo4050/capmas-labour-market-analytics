@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>CAPMAS - عرض التقرير</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="dashboard-body">
+<nav class="navbar">
+  <div class="nav-brand">
+    <img src="/static/logo.png.jpeg" alt="CAPMAS" style="height:36px;border-radius:4px;">
+    <span>CAPMAS - بوابة سوق العمل</span>
+  </div>
+  <div class="nav-info">
+    <a href="/reports" class="btn-logout">رجوع</a>
+    <a href="/logout" class="btn-logout">خروج</a>
+  </div>
+</nav>
+
+<div id="pdf-container" style="width:100%;height:calc(100vh - 60px);overflow-y:auto;background:#525659;padding:10px;box-sizing:border-box;">
+  <canvas id="pdf-canvas" style="display:block;margin:0 auto;background:white;max-width:100%;"></canvas>
+  <div style="text-align:center;margin-top:10px;padding-bottom:20px;">
+    <button onclick="prevPage()" class="btn-main" style="width:auto;padding:8px 20px;display:inline-block;">السابق</button>
+    <span style="color:white;margin:0 10px;" id="page-info">جاري التحميل...</span>
+    <button onclick="nextPage()" class="btn-main" style="width:auto;padding:8px 20px;display:inline-block;">التالي</button>
+  </div>
+</div>
+
+<script src="/static/pdf.min.js"></script>
+<script>
+  pdfjsLib.GlobalWorkerOptions.workerSrc = '/static/pdf.worker.min.js';
+
+  const url = '/pdf/{{ file }}';
+  let pdfDoc = null, pageNum = 1, rendering = false;
+
+  function getScale() {
+    const container = document.getElementById('pdf-container');
+    return Math.min(container.clientWidth / 620, 1.8);
+  }
+
+  function renderPage(num) {
+    if (rendering) return;
+    rendering = true;
+    pdfDoc.getPage(num).then(page => {
+      const scale = getScale();
+      const viewport = page.getViewport({ scale });
+      const canvas = document.getElementById('pdf-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      page.render({ canvasContext: ctx, viewport }).promise.then(() => {
+        rendering = false;
+        document.getElementById('page-info').textContent = `صفحة ${num} من ${pdfDoc.numPages}`;
+      });
+    });
+  }
+
+  pdfjsLib.getDocument({
+    url: url,
+    cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/',
+    cMapPacked: true,
+  }).promise.then(doc => {
+    pdfDoc = doc;
+    document.getElementById('page-info').textContent = `صفحة 1 من ${doc.numPages}`;
+    renderPage(1);
+  }).catch(err => {
+    document.getElementById('page-info').textContent = 'خطأ في تحميل الملف';
+    console.error(err);
+  });
+
+  function prevPage() {
+    if (pageNum <= 1 || !pdfDoc) return;
+    pageNum--;
+    renderPage(pageNum);
+  }
+
+  function nextPage() {
+    if (!pdfDoc || pageNum >= pdfDoc.numPages) return;
+    pageNum++;
+    renderPage(pageNum);
+  }
+</script>
+</body>
+</html>

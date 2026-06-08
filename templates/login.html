@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAPMAS - بوابة سوق العمل</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="page">
+
+  <div class="left-panel">
+    <div class="logo-area">
+      <img src="/static/logo.png.jpeg" alt="CAPMAS Logo">
+      <div class="logo-title">الجهاز المركزي<br>للتعبئة العامة والإحصاء</div>
+      <div class="divider-line"></div>
+      <div class="logo-subtitle">C A P M A S</div>
+      <p class="panel-desc">بوابة تحليلات سوق العمل<br>Labour Market Analytics Portal</p>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <div class="form-box">
+
+      <div class="tabs">
+        <button class="tab {% if tab == 'register' %}{% else %}active{% endif %}" onclick="switchTab('login')">تسجيل الدخول</button>
+        <button class="tab {% if tab == 'register' %}active{% endif %}" onclick="switchTab('register')">حساب جديد</button>
+      </div>
+
+      {% if error %}
+      <div class="alert-error">⚠ {{ error }}</div>
+      {% endif %}
+
+      <!-- LOGIN -->
+      <div id="login-section" class="section {% if tab != 'register' %}active{% endif %}">
+        <div class="form-title">مرحباً بك</div>
+        <div class="form-sub">اختر نوع حسابك وسجّل دخولك</div>
+
+        <div class="user-type-grid">
+          <div class="type-card selected" onclick="selectType(this,'individual')">
+            <span class="type-icon">🪪</span>
+            <span class="type-label">فرد</span>
+          </div>
+          <div class="type-card" onclick="selectType(this,'admin')">
+            <span class="type-icon">🛡</span>
+            <span class="type-label">مدير</span>
+          </div>
+        </div>
+
+        <form method="POST" action="/login">
+          <input type="hidden" name="user_type" id="user_type_input" value="individual">
+          <div class="field">
+            <label>اسم المستخدم</label>
+            <input type="text" name="username" placeholder="أدخل اسم المستخدم" required>
+          </div>
+          <div class="field">
+            <label>كلمة المرور</label>
+            <input type="password" name="password" placeholder="أدخل كلمة المرور" required>
+          </div>
+          <button type="submit" class="btn-main">دخول</button>
+        </form>
+      </div>
+
+      <!-- REGISTER (فرد فقط) -->
+      <div id="register-section" class="section {% if tab == 'register' %}active{% endif %}">
+        <div class="form-title">إنشاء حساب جديد</div>
+        <div class="form-sub">تسجيل حساب فرد جديد</div>
+
+        <form method="POST" action="/register">
+          <div class="field">
+            <label>اسم المستخدم</label>
+            <input type="text" name="username" placeholder="اختر اسم مستخدم" required>
+          </div>
+          <div class="field">
+            <label>كلمة المرور</label>
+            <input type="password" name="password" placeholder="أدخل كلمة المرور" required>
+          </div>
+          <div class="field">
+            <label>تأكيد كلمة المرور</label>
+            <input type="password" name="confirm_password" placeholder="أعد إدخال كلمة المرور" required>
+          </div>
+          <button type="submit" class="btn-main teal-btn">إنشاء الحساب</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    t.classList.toggle('active', (i===0 && tab==='login') || (i===1 && tab==='register'));
+  });
+  document.getElementById('login-section').classList.toggle('active', tab==='login');
+  document.getElementById('register-section').classList.toggle('active', tab==='register');
+}
+function selectType(el, type) {
+  document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('user_type_input').value = type;
+}
+</script>
+</body>
+</html>

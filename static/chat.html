@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAPMAS - مساعد البيانات</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f0f4f8;
+            direction: rtl;
+        }
+
+        header {
+            background: white;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 10px rgba(0,82,165,0.15);
+            border-bottom: 3px solid #0052a5;
+        }
+
+        header img {
+            height: 60px;
+        }
+
+        header div h1 {
+            color: #0052a5;
+            font-size: 20px;
+        }
+
+        header div p {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .chat-container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .messages {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            height: 520px;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,82,165,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .avatar.bot { background: #0052a5; }
+        .avatar.user { background: #e8f0fe; }
+
+        .bubble {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .message.bot .bubble {
+            background: #f0f4f8;
+            color: #222;
+            border-top-right-radius: 4px;
+        }
+
+        .message.user .bubble {
+            background: #0052a5;
+            color: white;
+            border-top-left-radius: 4px;
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        .badge.stat { background: #e8f5e9; color: #2e7d32; }
+        .badge.ind { background: #e3f2fd; color: #1565c0; }
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,82,165,0.1);
+        }
+
+        input {
+            flex: 1;
+            border: 2px solid #e0e8f0;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 15px;
+            font-family: inherit;
+            direction: rtl;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        input:focus { border-color: #0052a5; }
+
+        button {
+            background: #0052a5;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: inherit;
+        }
+
+        button:hover { background: #003d7a; }
+        button:disabled { background: #aaa; cursor: not-allowed; }
+
+        .typing {
+            display: flex;
+            gap: 5px;
+            padding: 10px;
+        }
+
+        .typing span {
+            width: 8px;
+            height: 8px;
+            background: #0052a5;
+            border-radius: 50%;
+            animation: bounce 1.2s infinite;
+        }
+
+        .typing span:nth-child(2) { animation-delay: 0.2s; }
+        .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-8px); }
+        }
+
+        .welcome {
+            text-align: center;
+            color: #888;
+            margin: auto;
+        }
+
+        .welcome img { height: 80px; margin-bottom: 15px; opacity: 0.5; }
+        .welcome p { font-size: 15px; }
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .suggestion {
+            background: white;
+            border: 2px solid #0052a5;
+            color: #0052a5;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .suggestion:hover {
+            background: #0052a5;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="logo.png" alt="CAPMAS">
+    <div>
+        <h1>مساعد بيانات CAPMAS</h1>
+        <p>نظام تحليل البيانات الإحصائية - الجهاز المركزي للتعبئة العامة والإحصاء</p>
+    </div>
+</header>
+
+<div class="chat-container">
+    <div class="suggestions">
+        <button class="suggestion" onclick="askSuggestion(this)">كم عدد العاطلين؟</button>
+        <button class="suggestion" onclick="askSuggestion(this)">ما نسبة الإناث العاملات؟</button>
+        <button class="suggestion" onclick="askSuggestion(this)">ما متوسط الراتب الشهري؟</button>
+        <button class="suggestion" onclick="askSuggestion(this)">كم عدد المعاقين؟</button>
+        <button class="suggestion" onclick="askSuggestion(this)">توزيع العمال حسب القطاع</button>
+    </div>
+
+    <div class="messages" id="messages">
+        <div class="welcome">
+            <img src="logo.png">
+            <p>مرحباً! اسألني أي سؤال عن البيانات الإحصائية</p>
+        </div>
+    </div>
+
+    <div class="input-area">
+        <input type="text" id="input" placeholder="اكتب سؤالك هنا..." onkeypress="handleKey(event)">
+        <button onclick="sendMessage()" id="sendBtn">إرسال</button>
+    </div>
+</div>
+
+<script>
+    const WEBHOOK = '/api/chat';
+    function handleKey(e) {
+        if (e.key === 'Enter') sendMessage();
+    }
+
+    function askSuggestion(btn) {
+        document.getElementById('input').value = btn.textContent;
+        sendMessage();
+    }
+
+    function addMessage(text, type, badge) {
+        const messages = document.getElementById('messages');
+        const welcome = messages.querySelector('.welcome');
+        if (welcome) welcome.remove();
+
+        const div = document.createElement('div');
+        div.className = `message ${type}`;
+
+        const avatar = document.createElement('div');
+        avatar.className = `avatar ${type}`;
+        avatar.textContent = type === 'bot' ? '🤖' : '👤';
+
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        bubble.innerHTML = text.replace(/\n/g, '<br>');
+
+        if (badge) {
+            const b = document.createElement('div');
+            b.className = `badge ${badge === 'statistical' ? 'stat' : 'ind'}`;
+            b.textContent = badge === 'statistical' ? '📊 إحصائي' : '👤 بحث فردي';
+            bubble.appendChild(b);
+        }
+
+        div.appendChild(avatar);
+        div.appendChild(bubble);
+        messages.appendChild(div);
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    function showTyping() {
+        const messages = document.getElementById('messages');
+        const div = document.createElement('div');
+        div.className = 'message bot';
+        div.id = 'typing';
+        div.innerHTML = `
+            <div class="avatar bot">🤖</div>
+            <div class="typing">
+                <span></span><span></span><span></span>
+            </div>`;
+        messages.appendChild(div);
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    function hideTyping() {
+        const t = document.getElementById('typing');
+        if (t) t.remove();
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('input');
+        const btn = document.getElementById('sendBtn');
+        const question = input.value.trim();
+        if (!question) return;
+
+        addMessage(question, 'user');
+        input.value = '';
+        btn.disabled = true;
+        showTyping();
+
+        try {
+            const res = await fetch(WEBHOOK, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question })
+            });
+
+            const data = await res.json();
+            hideTyping();
+            addMessage(data.answer || 'لم أتمكن من الإجابة', 'bot', data.type);
+        } catch (e) {
+            hideTyping();
+            addMessage('خطأ في الاتصال بالنظام', 'bot');
+        }
+
+        btn.disabled = false;
+        input.focus();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAPMAS - لوحة المدير</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="dashboard-body">
+
+<nav class="navbar">
+  <div class="nav-brand">
+    <img src="/static/logo.png.jpeg" alt="CAPMAS" style="height:36px;border-radius:4px;">
+    <span>CAPMAS - بوابة سوق العمل</span>
+  </div>
+  <div class="nav-info">
+    <span class="nav-id">🛡 مدير: <strong>{{ username }}</strong></span>
+    <a href="/logout" class="btn-logout">خروج</a>
+  </div>
+</nav>
+
+<div class="admin-container">
+
+  {% if error %}
+  <div class="alert-error" style="margin-bottom:1.5rem">⚠ {{ error }}</div>
+  {% endif %}
+  {% if success %}
+  <div class="alert-success" style="margin-bottom:1.5rem">✅ {{ success }}</div>
+  {% endif %}
+
+  <div class="admin-grid">
+
+    <!-- Individual ID Search -->
+    <div class="admin-section-card full-width">
+      <div class="card-header navy-header">
+        <span>🔍 البحث عن فرد بالـ ID</span>
+      </div>
+      <div style="padding:1.5rem">
+        <form method="POST" action="/admin/add_individual" style="display:flex;gap:12px;align-items:flex-end">
+          <div class="field" style="flex:1;margin:0">
+            <label>Individual ID</label>
+            <input type="text" name="individual_id" placeholder="أدخل رقم الهوية" value="{{ found_id or '' }}" required>
+          </div>
+          <button type="submit" class="btn-main" style="width:auto;padding:11px 28px;margin:0">بحث</button>
+        </form>
+
+        {% if found_id %}
+        <div style="margin-top:1.5rem">
+          <a href="/admin/individual/{{ found_id }}" class="report-btn tableau-btn" style="display:inline-flex">
+            <span>👤</span> عرض بيانات الفرد
+          </a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+</body>
+</html>

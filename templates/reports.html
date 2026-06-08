@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAPMAS - التقارير</title>
+<link rel="stylesheet" href="/static/css/style.css">
+<style>
+.reports-page { padding: 2rem; max-width: 1100px; margin: 0 auto; }
+.reports-title { font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 1.5rem; padding-bottom: 0.8rem; border-bottom: 3px solid var(--teal); }
+.pdf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.pdf-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.5rem; display: flex; align-items: flex-start; gap: 14px; transition: box-shadow 0.2s; }
+.pdf-card:hover { box-shadow: 0 4px 16px rgba(27,42,107,0.12); border-color: var(--teal); }
+.pdf-icon { font-size: 32px; flex-shrink: 0; }
+.pdf-name { font-size: 14px; font-weight: 600; line-height: 1.5; color: var(--navy); }
+.pdf-actions { margin-top: 10px; display: flex; gap: 8px; }
+.btn-view { padding: 6px 14px; background: var(--navy); color: white; border-radius: 6px; font-size: 12px; text-decoration: none; font-weight: 600; }
+.btn-view:hover { background: var(--navy-dark); }
+.btn-download { padding: 6px 14px; background: var(--teal); color: var(--navy); border-radius: 6px; font-size: 12px; text-decoration: none; font-weight: 600; }
+.btn-download:hover { background: var(--teal-dark); }
+</style>
+</head>
+<body class="dashboard-body">
+
+<nav class="navbar">
+  <div class="nav-brand">
+    <img src="/static/logo.png.jpeg" alt="CAPMAS" style="height:36px;border-radius:4px;">
+    <span>CAPMAS - بوابة سوق العمل</span>
+  </div>
+  <div class="nav-info">
+    <a href="javascript:history.back()" class="btn-logout">رجوع</a>
+    <a href="/logout" class="btn-logout">خروج</a>
+  </div>
+</nav>
+
+<div class="reports-page">
+  <div class="reports-title">📄 تقارير SSRS</div>
+  <div class="pdf-grid">
+
+    <div class="pdf-card">
+      <div class="pdf-icon">😷</div>
+      <div>
+        <div class="pdf-name">The Impact of the Coronavirus on Salaries and Working Hours</div>
+        <div class="pdf-actions">
+          <a href="/view-pdf?file=The impact of the coronavirus on salaries and working hours.pdf" class="btn-view">عرض</a>
+          <a href="/static/reports/The impact of the coronavirus on salaries and working hours.pdf" download class="btn-download">تحميل</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="pdf-card">
+      <div class="pdf-icon">🎓</div>
+      <div>
+        <div class="pdf-name">Employment Status by Education Level</div>
+        <div class="pdf-actions">
+          <a href="/view-pdf?file=Employment status by education level.pdf" class="btn-view">عرض</a>
+          <a href="/static/reports/Employment status by education level.pdf" download class="btn-download">تحميل</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="pdf-card">
+      <div class="pdf-icon">♿</div>
+      <div>
+        <div class="pdf-name">Employment Disability Report</div>
+        <div class="pdf-actions">
+          <a href="/view-pdf?file=Employment_Disability_Report.pdf" class="btn-view">عرض</a>
+          <a href="/static/reports/Employment_Disability_Report.pdf" download class="btn-download">تحميل</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="pdf-card">
+      <div class="pdf-icon">🗺</div>
+      <div>
+        <div class="pdf-name">Labor Force Statistics by Governorate</div>
+        <div class="pdf-actions">
+          <a href="/view-pdf?file=Labor Force Statistics by Governorate.pdf" class="btn-view">عرض</a>
+          <a href="/static/reports/Labor Force Statistics by Governorate.pdf" download class="btn-download">تحميل</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="pdf-card">
+      <div class="pdf-icon">📊</div>
+      <div>
+        <div class="pdf-name">Social Indicators - Employment and Disability 2024</div>
+        <div class="pdf-actions">
+          <a href="/view-pdf?file=Social Indicators - Employment and Disability 2024.pdf" class="btn-view">عرض</a>
+          <a href="/static/reports/Social Indicators - Employment and Disability 2024.pdf" download class="btn-download">تحميل</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="pdf-card">
+      <div class="pdf-icon">💰</div>
+      <div>
+        <div class="pdf-name">Salary Distribution</div>
+        <div class="pdf-actions">
+          <a href="/view-pdf?file=SalaryDistribution.pdf" class="btn-view">عرض</a>
+          <a href="/static/reports/SalaryDistribution.pdf" download class="btn-download">تحميل</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="pdf-card">
+      <div class="pdf-icon">💰</div>
+      <div>
+        <div class="pdf-name">Salary Distribution 2</div>
+        <div class="pdf-actions">
+          <a href="/view-pdf?file=SalaryDistribution 2.pdf" class="btn-view">عرض</a>
+          <a href="/static/reports/SalaryDistribution 2.pdf" download class="btn-download">تحميل</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="pdf-card">
+      <div class="pdf-icon">💰</div>
+      <div>
+        <div class="pdf-name">Salary Distribution 3</div>
+        <div class="pdf-actions">
+          <a href="/view-pdf?file=SalaryDistribution 3.pdf" class="btn-view">عرض</a>
+          <a href="/static/reports/SalaryDistribution 3.pdf" download class="btn-download">تحميل</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="pdf-card">
+      <div class="pdf-icon">💰</div>
+      <div>
+        <div class="pdf-name">Salary Distribution 4</div>
+        <div class="pdf-actions">
+          <a href="/view-pdf?file=SalaryDistribution 4.pdf" class="btn-view">عرض</a>
+          <a href="/static/reports/SalaryDistribution 4.pdf" download class="btn-download">تحميل</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="pdf-card">
+      <div class="pdf-icon">🏥</div>
+      <div>
+        <div class="pdf-name">Social Benefits Report</div>
+        <div class="pdf-actions">
+          <a href="/view-pdf?file=Social_Benefits_Reportt.pdf" class="btn-view">عرض</a>
+          <a href="/static/reports/Social_Benefits_Reportt.pdf" download class="btn-download">تحميل</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

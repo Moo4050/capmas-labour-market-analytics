@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAPMAS - بيانات الفرد</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="dashboard-body">
+
+<nav class="navbar">
+  <div class="nav-brand">
+    <img src="/static/logo.png.jpeg" alt="CAPMAS" style="height:36px;border-radius:4px;">
+    <span>CAPMAS - بوابة سوق العمل</span>
+  </div>
+  <div class="nav-info">
+    <span class="nav-id">🛡 مدير: <strong>{{ username }}</strong></span>
+    <a href="/admin" class="btn-logout">رجوع</a>
+    <a href="/logout" class="btn-logout">خروج</a>
+  </div>
+</nav>
+
+<div class="dashboard-container">
+
+  <div class="sections-sidebar">
+    <div class="sidebar-title">أقسام الفرد: {{ individual_id }}</div>
+    <button class="section-btn active" onclick="loadSection('personal', this)">👤 البيانات الشخصية</button>
+    <button class="section-btn" onclick="loadSection('employment', this)">💼 التوظيف</button>
+    <button class="section-btn" onclick="loadSection('education', this)">🎓 التعليم</button>
+    <button class="section-btn" onclick="loadSection('income', this)">💰 الدخل</button>
+    <button class="section-btn" onclick="loadSection('unemployment', this)">📋 البطالة</button>
+    <button class="section-btn" onclick="loadSection('disability', this)">♿ الإعاقة</button>
+    <button class="section-btn" onclick="loadSection('social', this)">🏥 المزايا الاجتماعية</button>
+    <button class="section-btn" onclick="loadSection('covid', this)">😷 تأثير كوفيد</button>
+    <button class="section-btn" onclick="loadSection('secondary_job', this)">🔧 الوظيفة الثانوية</button>
+  </div>
+
+  <div class="data-panel">
+    <div id="data-content">
+      <div class="welcome-card">
+        <div class="welcome-icon">🔍</div>
+        <h2>بيانات الفرد</h2>
+        <p>اختر قسماً من القائمة لعرض البيانات</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const IID = "{{ individual_id }}";
+const labels = {
+  personal:'البيانات الشخصية', employment:'التوظيف',
+  education:'التعليم', income:'الدخل',
+  unemployment:'البطالة', disability:'الإعاقة',
+  social:'المزايا الاجتماعية', covid:'تأثير كوفيد',
+  secondary_job:'الوظيفة الثانوية'
+};
+
+function loadSection(section, btn) {
+  document.querySelectorAll('.section-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('data-content').innerHTML = '<div class="loading">⏳ جاري تحميل البيانات...</div>';
+
+  fetch(`/api/individual/${section}?iid=${encodeURIComponent(IID)}`)
+    .then(r => r.json())
+    .then(res => {
+      if (!res.data) {
+        document.getElementById('data-content').innerHTML = `
+          <div class="no-data-card"><div style="font-size:48px;margin-bottom:1rem">📭</div>
+          <h3>لا توجد بيانات</h3><p>${res.message || ''}</p></div>`;
+        return;
+      }
+      let html = `<div class="data-card"><h2 class="section-title">${labels[section]}</h2><table class="data-table">`;
+      for (const [key, val] of Object.entries(res.data)) {
+        if (key === 'Individual_ID') continue;
+        html += `<tr><td class="col-key">${key.replace(/_/g,' ')}</td><td class="col-val">${val ?? '—'}</td></tr>`;
+      }
+      html += '</table></div>';
+      document.getElementById('data-content').innerHTML = html;
+    })
+    .catch(() => {
+      document.getElementById('data-content').innerHTML = '<div class="no-data-card">❌ خطأ في تحميل البيانات</div>';
+    });
+}
+
+loadSection('personal', document.querySelector('.section-btn.active'));
+</script>
+</body>
+</html>

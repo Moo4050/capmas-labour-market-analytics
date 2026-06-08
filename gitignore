@@ -1,0 +1,86 @@
+# =============================================
+# CAPMAS Labour Market Analytics — .gitignore
+# =============================================
+
+# ─── Sensitive / Credentials ──────────────────
+.env
+.env.*
+*.env
+users.json
+*_credentials.json
+secrets/
+config/local*.json
+
+# ─── Survey & Database Data ───────────────────
+data/
+raw_data/
+*.csv
+*.xlsx
+*.xls
+!**/example_*.csv
+!**/sample_*.xlsx
+*.mdf
+*.ldf
+*.bak
+
+# ─── AI Models & Vector DB ────────────────────
+models/
+qdrant_storage/
+ollama_data/
+*.gguf
+*.bin
+*.safetensors
+
+# ─── Docker volumes (local) ───────────────────
+n8n_data/
+docker/volumes/
+
+# ─── Python ───────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+.Python
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+
+# ─── Node / JS ────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# ─── OS Files ─────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── IDE ──────────────────────────────────────
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ─── Logs ─────────────────────────────────────
+logs/
+*.log
+*.log.*
+
+# ─── Temporary ────────────────────────────────
+tmp/
+temp/
+*.tmp
+*.swp
+*~
+
+# ─── SSRS / Reports (compiled) ────────────────
+*.rptproj.user
+*.rdl.data
+
+# ─── ngrok ────────────────────────────────────
+ngrok.yml
+.ngrok2/

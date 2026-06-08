@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAPMAS - بوابة الفرد</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="dashboard-body">
+
+<nav class="navbar">
+  <div class="nav-brand">
+    <img src="/static/logo.png.jpeg" alt="CAPMAS" style="height:36px;border-radius:4px;">
+    <span>CAPMAS - بوابة سوق العمل</span>
+  </div>
+  <div class="nav-info">
+    <span class="nav-id">👤 {{ display_name }}</span>
+    <a href="/logout" class="btn-logout">خروج</a>
+  </div>
+</nav>
+
+<div class="individual-container">
+  <div class="ind-grid">
+
+    <!-- Tableau -->
+    <div class="ind-card full-width">
+      <div class="card-header teal-header">
+        <span>📊 داشبوردات Tableau</span>
+      </div>
+      <div class="reports-grid">
+        <a href="https://public.tableau.com/views/final_dashboard_17805308862370/sheet8?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link" target="_blank" class="report-btn tableau-btn">
+          <span>📈</span> داشبورد Tableau 1
+        </a>
+        <a href="https://public.tableau.com/app/profile/rokaya.samy/viz/SurveyCoverageRepresentativeness/SurveyCoverageRepresentativeness?publish=yes" target="_blank" class="report-btn tableau-btn">
+          <span>📉</span> داشبورد Tableau 2
+        </a>
+        <a href="https://public.tableau.com/app/profile/mustafa.ashraf4167/viz/SocialVulnerabilityIndex/SocialVulnerabilityIndexDashboard?publish=yes" target="_blank" class="report-btn tableau-btn">
+          <span>📊</span> داشبورد Tableau 3
+        </a>
+      </div>
+    </div>
+
+    <!-- Power BI -->
+    <div class="ind-card full-width">
+      <div class="card-header navy-header">
+        <span>⚡ Power BI Dashboard</span>
+      </div>
+      <div style="padding:0">
+        <iframe
+          src="https://app.powerbi.com/reportEmbed?reportId=a06fb50b-07e0-4377-9f93-da1d84e7fded&autoAuth=true&embeddedDemo=true"
+          style="width:100%;height:600px;border:none;"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
+    <!-- SSRS -->
+    <div class="ind-card">
+      <div class="card-header navy-header">
+        <span>📄 تقارير SSRS</span>
+      </div>
+      <div class="reports-grid">
+        <a href="/reports" target="_blank" class="report-btn ssrs-btn">
+          <span>📋</span> فتح SSRS Reports
+        </a>
+      </div>
+    </div>
+
+    <!-- Chatbot -->
+    <div class="ind-card">
+      <div class="card-header teal-header">
+        <span>🤖 Chatbot</span>
+      </div>
+      <div class="reports-grid">
+        <a href="/n8n" target="_blank" class="report-btn chat-btn">
+          <span>💬</span> فتح الـ Chatbot
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
